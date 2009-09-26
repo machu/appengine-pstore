@@ -5,14 +5,15 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "appengine-pstore"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{PStore compatible interface for Google Apps Engine.}
+    gem.description = %Q{PStore compatible interface for Google Apps Engine.}
     gem.email = "kohei@machu.jp"
     gem.homepage = "http://github.com/machu/appengine-pstore"
     gem.authors = ["MATSUOKA Kohei"]
     gem.add_development_dependency "rspec"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
+  Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end

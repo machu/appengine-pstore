@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{appengine-pstore}
-  s.version = "0.0.0"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["MATSUOKA Kohei"]
   s.date = %q{2009-09-26}
-  s.description = %q{TODO: longer description of your gem}
+  s.description = %q{PStore compatible interface for Google Apps Engine.}
   s.email = %q{kohei@machu.jp}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "appengine-pstore.gemspec",
      "lib/appengine-pstore.rb",
      "spec/appengine-pstore_spec.rb",
      "spec/spec_helper.rb"
@@ -31,7 +32,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
-  s.summary = %q{TODO: one-line summary of your gem}
+  s.summary = %q{PStore compatible interface for Google Apps Engine.}
   s.test_files = [
     "spec/appengine-pstore_spec.rb",
      "spec/spec_helper.rb"

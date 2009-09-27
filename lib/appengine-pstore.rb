@@ -77,6 +77,7 @@ module AppEngine
       ensure
         @transaction.commit if @transaction.active?
         @transaction = nil
+        @uncommited = nil
       end
     end
 
@@ -97,6 +98,7 @@ module AppEngine
       # return uncommited data if exist
       return @uncommited[:added][name] if @uncommited[:added].key?(name)
       return nil if @uncommited[:deleted].key?(name)
+
       key = AppEngine::Datastore::Key.from_path(@parent_key, @kind, dump(name))
       begin
         entity = AppEngine::Datastore.get(@transaction, key)
@@ -150,7 +152,7 @@ module AppEngine
     end
 
     def path
-      @parent_key
+      @parent_key.name
     end
   end
 end

@@ -112,6 +112,11 @@ describe AppEngine::PStore do
     end
   end
 
+  it 'should support path' do
+    db = AppEngine::PStore.new('somewhere')
+    db.path.should == 'somewhere'
+  end
+
   it 'should support readonly database' do
     p = lambda {
       @db.transaction(true) do |db|
@@ -125,6 +130,10 @@ describe AppEngine::PStore do
       end
     }
     p.should raise_error PStore::Error
+  end
+
+  it 'should return block value' do
+    @db.transaction{ 'hello' }.should == 'hello'
   end
 
   describe 'transaction' do

@@ -45,18 +45,11 @@ module AppEngine
     end
 
     def in_transaction
-      #transaction = AppEngine::Datastore.current_transaction(nil)
-      #pp transaction.active?
-      #pp @transaction.active?
       if @transaction == nil || @transaction.active? == false
       #unless transaction && transaction.active
       #unless AppEngine::Datastore.current_transaction(nil)
         raise ::PStore::Error, "not in transaction"
       end
-    end
-
-    def self.active_transactions
-      AppEngine::Datastore.active_transactions
     end
 
     def in_transaction_wr
@@ -66,10 +59,10 @@ module AppEngine
     private :in_transaction, :in_transaction_wr
 
     def transaction(readonly = false)
+      raise ::PStore::Error, "nested transaction" if @transaction
       @rdonly = readonly
       @transaction = AppEngine::Datastore.begin_transaction
-      @abort = false
-      # cache uncommited entity
+      # uncommited entities
       @uncommited = {
         :added => {},
         :deleted => {}
@@ -79,26 +72,23 @@ module AppEngine
           yield self
         end
       rescue Exception
-        @abort = true
+        @transaction.rollback if @transaction.active?
         raise
       ensure
-        if @abort
-          @transaction.rollback
-        else
-          @transaction.commit
-        end
+        @transaction.commit if @transaction.active?
         @transaction = nil
       end
     end
 
     def commit
       in_transaction
+      @transaction.commit
       throw :pstore_abort_transaction
     end
 
     def abort
       in_transaction
-      @abort = true
+      @transaction.rollback
       throw :pstore_abort_transaction
     end
 

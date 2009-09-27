@@ -166,6 +166,16 @@ describe AppEngine::PStore do
       end
     end
 
+    it 'should not support nested transaction' do
+      p = lambda {
+        @db.transaction do |db1|
+          @db.transaction do |db2|
+          end
+        end
+      }
+      p.should raise_error PStore::Error
+    end
+
     it 'should raise PStore::Error outside transaction' do
       p = lambda { @db[:key1] = "hello" }
       p.should raise_error PStore::Error

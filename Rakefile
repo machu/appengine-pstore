@@ -5,12 +5,13 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "appengine-pstore"
-    gem.summary = %Q{PStore compatible interface for Google Apps Engine.}
-    gem.description = %Q{PStore compatible interface for Google Apps Engine.}
+    gem.summary = %Q{The PStore interfaces for the Google App Engine Datastore.}
+    gem.description = %Q{The PStore interfaces for the Google App Engine Datastore.}
     gem.email = "kohei@machu.jp"
     gem.homepage = "http://github.com/machu/appengine-pstore"
     gem.authors = ["MATSUOKA Kohei"]
     gem.add_development_dependency "rspec"
+    gem.add_dependency "appengine-apis"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new

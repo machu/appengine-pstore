@@ -37,27 +37,45 @@ module AppEngine
     end
   end
 
+  # The PStore compatible interface for Google App Engine Datastore.
+  # 
+  #  db = AppEngine::PStore.new(dbname)
+  #  db.transaction do |db|
+  #    db[key] = value
+  #  end
+  # 
+  # A data is stored to the Datastore as AppEngine::Entity.
+  # The stracture of Datastore has following schema.
+  #
+  #  * dbname: a root key for the Datastore.
+  #  * key: A child of the root key.
+  #  * value: AppEngine::Entity that contains the value object.
+  #
+  # Note: 'key' and 'value' are marshalled before putting Datastore.
+  #
   class PStore
+    # Create a database identified by dbname.
     def initialize(dbname)
       @kind = self.class.name
       @parent_key = AppEngine::Datastore::Key.from_path(@kind, dbname)
       @transaction = nil
     end
 
+    # Raises PStore::Error unless in a transaction.
     def in_transaction
       if @transaction == nil || @transaction.active? == false
-      #unless transaction && transaction.active
-      #unless AppEngine::Datastore.current_transaction(nil)
         raise ::PStore::Error, "not in transaction"
       end
     end
 
+    # Raises PStore::Error unless in a writable transaction.
     def in_transaction_wr
       in_transaction
       raise ::PStore::Error, "in read-only transaction" if @rdonly
     end
     private :in_transaction, :in_transaction_wr
 
+    # Begins a new transaction for the AppEngine::Datastore.
     def transaction(readonly = false)
       raise ::PStore::Error, "nested transaction" if @transaction
       @rdonly = readonly
@@ -81,18 +99,21 @@ module AppEngine
       end
     end
 
+    # Commit the transaction.
     def commit
       in_transaction
       @transaction.commit
       throw :pstore_abort_transaction
     end
 
+    # Abort the transaction.
     def abort
       in_transaction
       @transaction.rollback
       throw :pstore_abort_transaction
     end
 
+    # Retrieves a stored value from the Datastore by the name.
     def [](name)
       in_transaction
       # return uncommited data if exist
@@ -108,6 +129,7 @@ module AppEngine
       end
     end
 
+    # Stores a value to the Datastore by the name.
     def []=(name, value)
       in_transaction_wr
       entity = AppEngine::Datastore::Entity.new(@kind, dump(name), @parent_key)
@@ -118,6 +140,7 @@ module AppEngine
       value
     end
 
+    # Delete a value from the Datastore by the name.
     def delete(name)
       in_transaction_wr
       key = AppEngine::Datastore::Key.from_path(@parent_key, @kind, dump(name))
@@ -137,6 +160,7 @@ module AppEngine
       Marshal::dump(content)
     end
 
+    # Returns all keys of this database.
     def roots
       in_transaction
       query = AppEngine::Datastore::Query.new(@kind, @parent_key)
@@ -146,11 +170,13 @@ module AppEngine
       (db_keys + @uncommited[:added].keys - @uncommited[:deleted].keys).uniq
     end
 
+    # Whether the database has key.
     def root?(key)
       in_transaction
       self.roots.include?(key)
     end
 
+    # Returns the database's name
     def path
       @parent_key.name
     end

@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["MATSUOKA Kohei"]
-  s.date = %q{2009-09-27}
-  s.description = %q{PStore compatible interface for Google Apps Engine.}
+  s.date = %q{2009-09-28}
+  s.description = %q{The PStore interfaces for the Google App Engine Datastore.}
   s.email = %q{kohei@machu.jp}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
-  s.summary = %q{PStore compatible interface for Google Apps Engine.}
+  s.summary = %q{The PStore interfaces for the Google App Engine Datastore.}
   s.test_files = [
     "spec/appengine-pstore_spec.rb",
      "spec/spec_helper.rb"
@@ -44,10 +44,13 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<rspec>, [">= 0"])
+      s.add_runtime_dependency(%q<appengine-apis>, [">= 0"])
     else
       s.add_dependency(%q<rspec>, [">= 0"])
+      s.add_dependency(%q<appengine-apis>, [">= 0"])
     end
   else
     s.add_dependency(%q<rspec>, [">= 0"])
+    s.add_dependency(%q<appengine-apis>, [">= 0"])
   end
 end

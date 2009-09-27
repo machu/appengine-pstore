@@ -1,10 +1,41 @@
 = appengine-pstore
 
- * http://github.com/machu/appengine-pstore
+* http://github.com/machu/appengine-pstore
 
 == DESCRIPTION:
 
 The PStore interfaces for the Google App Engine Datastore.
+
+== SYNOPSIS
+
+You can use the Google App Engine Datastore like PStore.
+
+ db = AppEngine::PStore.new('database.pstore')
+ db.transaction do |db|
+   db[:key1] = "value1"
+   db[:key2] = "value2"
+ end
+ 
+ db.transaction do |db|
+   puts db[:key1]   # => "value1"
+ end
+
+== NOTE
+
+A database has following limits.
+
+* maximum key count: 1,000 keys
+* maximum value size: 1MB
+
+== INSTALL
+
+This module is hosted by gems.github.com. 
+
+ sudo gem install machu-appengine-pstore --source http://gems.github.com
+
+== DEPENDENCIES
+
+This library depends on appengine-apis.
 
 == Copyright
 
